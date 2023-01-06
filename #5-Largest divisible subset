@@ -1,0 +1,31 @@
+Link  :  https://leetcode.com/problems/largest-divisible-subset/
+
+Same implementation as that of Largest increasing subsequence
+
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n=nums.size(),ans=-1,lastIndx=-1;
+        vector<int> dp(n,1),hash(n,-1);
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                if((nums[i]%nums[j]==0)&&dp[j]>=dp[i]){
+                    dp[i]=dp[j]+1;
+                    hash[i]=j;
+                }
+            }
+            if(dp[i]>ans){
+                ans=dp[i];
+                lastIndx=i;
+            }
+        }
+        vector<int> largSub;
+        while(lastIndx!=-1){
+            largSub.push_back(nums[lastIndx]);
+            lastIndx=hash[lastIndx];
+        }
+        reverse(largSub.begin(),largSub.end());
+        return largSub;
+    }
+};
