@@ -1,0 +1,58 @@
+Combination Sum I :  https://leetcode.com/problems/combination-sum/
+
+class Solution {
+public:
+
+    void helper(vector<int>&candidates,int index ,int n,vector<vector<int>> &uniqueComb,vector<int>&res,int tar,int currSum){
+        if(tar==currSum){
+            uniqueComb.push_back(res);
+            return;
+        }        
+        while(index<n&&tar>=currSum){
+            res.push_back(candidates[index]);
+            helper(candidates,index,n,uniqueComb,res,tar,currSum+candidates[index]);
+            res.pop_back();
+            index++;
+        }
+    } 
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int tar) {
+        vector<vector<int>> uniqueComb;
+        vector<int> res; 
+        helper(candidates,0,candidates.size(),uniqueComb,res,tar,0);
+        return uniqueComb;
+    }
+};
+
+
+
+Combination Sum II :    https://leetcode.com/problems/combination-sum-ii/
+
+
+
+Combination Sum III :  https://leetcode.com/problems/combination-sum-iii/
+
+class Solution {
+public:
+
+    void helper(int num,int size,int tar,int currSum,vector<vector<int>> &uniComb,vector<int>&res){
+        if(currSum==tar&&res.size()==size){
+            uniComb.push_back(res);
+            return ;
+        }
+
+        for(int i=num+1;i<=9&&res.size()<=size&&currSum<=tar;i++){
+            res.push_back(i);
+            helper(i,size,tar,currSum+i,uniComb,res);
+            res.pop_back();            
+        }
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> uniComb;
+        vector<int> res;
+        int num=0;
+        helper(num,k,n,0,uniComb,res);
+        return uniComb;
+    }
+};
