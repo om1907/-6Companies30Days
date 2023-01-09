@@ -1,0 +1,60 @@
+Link  :  https://leetcode.com/problems/most-profitable-path-in-a-tree/
+
+
+
+class Solution {
+public:
+
+    void dfs(int node,int dis,int parn,vector<int> adj[],vector<int> &dist,vector<int> &par){
+        dist[node]=dis;
+        par[node]=parn;
+        for(auto it:adj[node]){
+            if(it==parn){
+                continue;
+            }
+            dfs(it,dis+1,node,adj,dist,par);
+        }
+    }
+
+    int dfs2(int node,int par,vector<int> adj[],vector<int>&amount){
+        int ans=INT_MIN;
+        for(auto it:adj[node]){
+            if(it!=par){
+                ans=max(ans,dfs2(it,node,adj,amount));
+            }
+        }
+        if(ans==INT_MIN){
+            return amount[node];
+        }
+        else{
+            return ans+amount[node];
+        }
+    }
+
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        int n=amount.size();
+        vector<int> adj[n];
+        vector<int> dist(n,0);
+        vector<int> par(n,-1);
+        for(int i=0;i<edges.size();i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        dfs(0,0,-1,adj,dist,par);
+        int bobPos=bob;
+        int bobDist=0;
+        while(bobPos!=0){
+            if(bobDist<dist[bobPos]){
+                amount[bobPos]=0;
+            }
+            else if(bobDist==dist[bobPos]){
+                amount[bobPos]/=2;
+            }
+            bobPos=par[bobPos];
+            bobDist++;
+        }
+        return dfs2(0,-1,adj,amount);
+    }
+};
