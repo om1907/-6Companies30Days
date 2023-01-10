@@ -1,0 +1,42 @@
+Link :   https://leetcode.com/problems/number-of-pairs-satisfying-inequality/
+
+
+class Solution {
+public:
+    long long ans=0;
+
+    void count(vector<int>&nums,int st,int mid,int end,int diff){
+        int l=st,r=mid+1;
+        while(l<=mid&&r<=end){
+            if(nums[l]<=nums[r]+diff){
+                ans+=(end-r+1);
+                l++;
+            }
+            else{
+                r++;
+            }
+        }
+        sort(nums.begin()+st,nums.begin()+end+1);
+    }
+
+    void mergeSort(vector<int> &nums,int st,int end,int diff){
+        if(st==end){
+            return;
+        }
+        int mid=st+(end-st)/2;
+        mergeSort(nums,st,mid,diff);
+        mergeSort(nums,mid+1,end,diff);
+        count(nums,st,mid,end,diff);
+    }
+
+    long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+        int n=nums1.size();
+        // int ans=0;      
+        vector<int> nums;  
+        for(int i=0;i<n;i++){
+            nums.push_back(nums1[i]-nums2[i]);     
+        }
+        mergeSort(nums,0,n-1,diff);
+        return ans;
+    }
+};
