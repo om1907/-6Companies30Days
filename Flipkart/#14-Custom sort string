@@ -1,0 +1,27 @@
+Link :  https://leetcode.com/problems/custom-sort-string/submissions/881424678/
+
+
+class Solution {
+public:
+    string customSortString(string order, string s) {
+        map<char,int> mp;
+        for(auto it:s){
+            mp[it]++;
+        }
+        string ans="";
+        for(auto x:order){
+            if(mp[x]>0){
+                int count=mp[x];
+                string str(count,x);
+                ans+=str;
+                mp.erase(x);
+            }
+        }
+        for(auto x:mp){
+            int count=x.second;
+            string str(count,x.first);
+            ans+=str;
+        }
+        return ans;
+    }
+};
