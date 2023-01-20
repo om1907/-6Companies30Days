@@ -1,0 +1,35 @@
+ Link :  https://leetcode.com/problems/distant-barcodes/submissions/882043227/
+ 
+ 
+ class Solution {
+public:
+    vector<int> rearrangeBarcodes(vector<int>& barcodes) {
+        if(barcodes.size()<=1){
+            return barcodes;
+        }
+        vector<int> ans;
+        unordered_map<int,int> ump;
+        for(auto it:barcodes){
+            ump[it]++;
+        }
+        priority_queue<pair<int,int>> pq;
+        for(auto it:ump){
+            pq.push({it.second,it.first});
+        }
+        while(pq.top().first>0){
+            auto ele1=pq.top();
+            pq.pop();
+            ans.push_back(ele1.second);
+            ele1.first--;
+            auto ele2=pq.top();
+            pq.pop();
+            if(ele2.first>0){
+                ans.push_back(ele2.second);
+                ele2.first--;
+            }
+            pq.push(ele1);
+            pq.push(ele2);
+        }
+        return ans;
+    }
+};
